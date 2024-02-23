@@ -17,8 +17,14 @@ with open("NDA.pdf", "rb") as f:
     pdf_hash = int.from_bytes(hashlib.sha256(pdf_bytes).digest(), "big")
 signature = pow(pdf_hash, dA, nA)
 
+#Convertimes la firma a bytes
+signature_bytes = signature.to_bytes((signature.bit_length() + 7) // 8, byteorder="big")
 
-# Verificación por AC
+#lo agregamos al final del archivo
+with open("NDA.pdf", "ab") as f:
+    f.write(signature_bytes)
+
+# Verificación por AC con la publica de Alice
 pdf_hash_verif = pow(signature, e, nA)
 print("Firma verificada por AC:", pdf_hash_verif == pdf_hash)
 
@@ -30,8 +36,13 @@ phiAC = (pAC - 1) * (qAC - 1)
 eAC = 65537
 dAC = inverse(eAC, phiAC)
 
-# Firma de AC
+# Firma de AC con la publica de AC
 signature_ac = pow(pdf_hash, dAC, nAC)
+
+# Agregamos la firma de AC al final del archivo
+signature_ac_bytes = signature_ac.to_bytes((signature_ac.bit_length() + 7) // 8, byteorder="big")
+with open("NDA.pdf", "ab") as f:
+    f.write(signature_ac_bytes)
 
 # Verificación por Bob
 pdf_hash_verif = pow(signature_ac, eAC, nAC)
