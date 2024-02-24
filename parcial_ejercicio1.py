@@ -5,27 +5,17 @@ import Crypto as c
 # Número de bits
 bits = 1024
 
-# Obtener los primos para Alice y Bob
-pA = n.getPrime(bits, randfunc=c.Random.get_random_bytes)
-print("pA: ", pA, "\n")
-qA = n.getPrime(bits, randfunc=c.Random.get_random_bytes)
-print("qA: ", qA, "\n")
-
+# Obtener los primos para Bob
 pB = n.getPrime(bits, randfunc=c.Random.get_random_bytes)
 print("pB: ", pB, "\n")
 qB = n.getPrime(bits, randfunc=c.Random.get_random_bytes)
 print("qB: ", qB, "\n")
 
-# Obtenemos la primera parte de la lave publica de alice y Bob
-nA = pA * qA
-print("nA: ", nA, "\n")
+# Obtenemos la primera parte de la lave publica de Bob
 nB = pB * qB
 print("nB: ", nB, "\n")
 
 # Calculamos la funcion phi de n
-phiA = (pA - 1) * (qA - 1)
-print("phiA: ", phiA, "\n")
-
 phiB = (pB - 1) * (qB - 1)
 print("phiB: ", phiB, "\n")
 
@@ -34,10 +24,7 @@ print("phiB: ", phiB, "\n")
 # no  es necesario calcularlo
 e = 65537
 
-# Calculamos la clave privada de Alice y Bob
-dA = n.inverse(e, phiA)
-print("dA: ", dA, "\n")
-
+# Calculamos la clave privada de Bob
 dB = n.inverse(e, phiB)
 print("dB: ", dB, "\n")
 
